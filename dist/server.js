@@ -8,9 +8,9 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 const connect_flash_1 = __importDefault(require("connect-flash"));
-//creating express app 
+//creating express app
 const app = (0, express_1.default)();
-// Set up middlewars 
+// Set up middlewares 
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.set('view engine', 'ejs');
@@ -23,9 +23,6 @@ const connect_mongo_1 = __importDefault(require("connect-mongo"));
 //dontenv configured and requiring db_handler 
 dotenv_1.default.config();
 const config_1 = require("./database/config");
-// SETUP OUR EXPRESS APP SETTINGS 
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
 //get connection to our DB
 config_1.db_handler.authenticate().then(() => {
     console.log("Successfully connected  to MySQL server");

@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS Trails (
    trail_name VARCHAR (128) UNIQUE  NOT NULL ,
    trail_location VARCHAR (128) NOT NULL,
    difficulty_level VARCHAR (128) NOT NULL,
-   trail_image VARCHAR (1024) NOT NULL,
+   trail_image VARCHAR (2048) NOT NULL,
    author_id INT NOT NULL,
    trail_longitude FLOAT  NOT NULL DEFAULT 0,
    trail_latitude FLOAT  NOT NULL DEFAULT 0,
