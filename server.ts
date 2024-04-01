@@ -45,7 +45,7 @@ import { db_handler } from "./database/config";
 db_handler.authenticate().then(() => {
     console.log("Successfully connected  to MySQL server");
 }).catch((error: Error) => {
-    console.error('Ouups, cannot get connection to MySQL server!' + error.message);
+    console.error('Ouups, cannot get connection to MySQL server! ' + error.message);
 });
 
 

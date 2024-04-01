@@ -23,17 +23,17 @@
         <h3 class="float-md-left mb-5 header__logo"><i class="fas fa-hiking"></i> Gohiking</h3>
         <nav class="nav nav-masthead justify-content-center float-md-right header__navbar">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
-          <a class="nav-link" href="/about">About Us</a>
+          <a class="nav-link" href="/about">About us</a>
           <% if(!active_user_email) { %>
           <a class="nav-link" href="/users/login">Login</a>
-          <a class="nav-link" href="/users/signup">SignUp</a>
+          <a class="nav-link" href="/users/signup">Sign up</a>
           <% } else { %>
             <form action="/users/logout" method="post">
-                <button class="btn btn-dark bg-transparent" style="margin-top: 0px; border: none;color:rgba(255, 255, 255, 0.5);"> Logout</button>
+                <button class="btn btn-dark bg-transparent" style="margin-top: 0px; border: none;color:rgba(255, 255, 255, 0.5);"> Log out</button>
 
             </form>
           <!-- <a class="nav-link" href="/users/logout">Logout</a> -->
-          <a class="nav-link" href="/users/signout">SignOut</a>
+          <a class="nav-link" href="/users/signout">Sign out</a>
           <% } %>
 
   

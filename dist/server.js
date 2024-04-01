@@ -27,7 +27,7 @@ const config_1 = require("./database/config");
 config_1.db_handler.authenticate().then(() => {
     console.log("Successfully connected  to MySQL server");
 }).catch((error) => {
-    console.error('Ouups, cannot get connection to MySQL server!' + error.message);
+    console.error('Ouups, cannot get connection to MySQL server! ' + error.message);
 });
 // /** SETUP OUR SESSIONS */
 const sessionOption = {
