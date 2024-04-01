@@ -1,23 +1,38 @@
 BD: JOhikes -- application de randonneurs-- elle vous permet de: 
         - créer un profil utilisateur.
-        - ajouter des parcours dans la map des parcours existants.
+        - ajouter des parcours sur la map des parcours existants.
         - supprimer des parcours existants (qui vous appartiennent biensur).
         - Visualiser les parcours de randonnées et leurs localisation sur la map.
         - aller pour une randonnée de votre choix.
 
 Classes:
 
-Users(randonneurs): en tant que randonneur ,j'ai un id, un nom, prénom , un email.
-                  en tant que randonneur je suis associé à des parcours (peux créer un parcours)
-                  en tant que randonneur je peux créer des postes sur mes parcours
-                  en tant que randonneur je peux commenter des parcours 
+Users(randonneurs): 
+        en tant que randonneur ,j'ai un id, un nom, prénom , un email.
+        en tant que randonneur je suis associé à des parcours (peux créer un parcours)
+        en tant que randonneur je peux créer des postes sur mes parcours
+        en tant que randonneur je peux commenter des parcours 
                   
                 
-Trails: en tant que parcours j'ai un id, un nom, une localisation (nom de la ville), une durée, une longueur, un dénivelé, (un  niveau de difficulté qui dépend du dénivelé et de la durée) et une image.
+Trails: 
+        en tant que parcours j'ai un id, 
+        en tant que parcours j'ai un nom, 
+        en tant que parcours j'ai une localisation (nom de la ville), 
+        en tant que parcours j'ai une durée, une longueur, 
+        en tant que parcours j'ai un dénivelé, (un  niveau de difficulté qui dépend du dénivelé et de la durée).
+        en tant que parcours j'ai une image.
 
-Difficulties: en tant que  difficulté j'ai un niveau , une longueur maximale, un denivelé maximale et une durée maximale
+Difficulties: 
+        en tant que  difficulté en tant que  difficulté j'ai un niveau, 
+        en tant que  difficulté une longueur maximale, 
+        en tant que  difficulté un denivelé maximale,
+        en tant que  difficulté une durée maximale
 
-Reviews: en tant que commentaire , j'ai un contenu,une note étoilée sur 5, un auteur et le parcours auquel je suis associé.
+Reviews: 
+         en tant que commentaire  en tant que commentaire, 
+         en tant que commentaire  j'ai un contenu,
+         en tant que commentaire  une note étoilée sur 5, 
+         en tant que commentaire  un auteur et le parcours auquel je suis associé.
 
 
 
