@@ -1,7 +1,7 @@
 import { NextFunction, Request,Response } from "express";
 
 
-export const postLogout= (req:Request,res:Response,next:NextFunction)=>{
+export const getLogout= (req:Request,res:Response,next:NextFunction)=>{
 
     if(!req.session.active_user_email){
         req.flash("danger","Already logged out !");

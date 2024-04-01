@@ -28,10 +28,7 @@
           <a class="nav-link" href="/users/login">Login</a>
           <a class="nav-link" href="/users/signup">Sign up</a>
           <% } else { %>
-            <form action="/users/logout" method="post">
-                <button class="btn btn-dark bg-transparent" style="margin-top: 0px; border: none;color:rgba(255, 255, 255, 0.5);"> Log out</button>
-
-            </form>
+            <a class="nav-link" href="/users/login">Log out</a>
           <!-- <a class="nav-link" href="/users/logout">Logout</a> -->
           <a class="nav-link" href="/users/signout">Sign out</a>
           <% } %>

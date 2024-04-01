@@ -3,7 +3,7 @@ import { getSignup } from "./getSignup";
 import { getProfile } from "./getProfile";
 import { postLogin } from "./postLogin";
 import { postSignup } from "./postSignup";
-import { postLogout } from "./postLogout";
+import { getLogout } from "./getLogout";
 import { postSignout } from "./postSignout";
 import { getSignout } from "./getSignout";
 
@@ -12,6 +12,8 @@ export {getSignup};
 export {postLogin};
 export {postSignup};
 export {getProfile};
-export {postLogout};
+export {getLogout};
 export {postSignout};
 export {getSignout};
+
+

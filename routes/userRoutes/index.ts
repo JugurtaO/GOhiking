@@ -10,13 +10,14 @@ userRouter.get("/login",userControllers.getLogin);
 userRouter.get("/signup",userControllers.getSignup);
 userRouter.get("/profile",userControllers.getProfile);
 userRouter.get("/signout",userControllers.getSignout);
+userRouter.get("/logout", sanitize, catchAsync(userControllers.getLogout));
+
 userRouter.get("/trails",trailControllers.userTrails);
 
 
 
 userRouter.post("/login",  sanitize, catchAsync(userControllers.postLogin ));
 userRouter.post("/signup", sanitize, catchAsync(userControllers.postSignup));
-userRouter.post("/logout", sanitize, catchAsync(userControllers.postLogout));
 userRouter.post("/signout",sanitize, catchAsync(userControllers.postSignout));
 
 

@@ -130,17 +130,17 @@
 
       // Add markers to the map
       allTrails.forEach(trail => {
+        
         let popup = new tt.Popup({
           offset: popupOffsets
         }).setHTML(`
-        <div style="width: 170px; height: 130px; background-color: #fff; border-radius: 4px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">
-          <img src=${trail.trail_image} alt="Image" style="width:100%; height: 70%;">
-          <h6 ><b>${trail.trail_name}</h6> 
-         
-        </div>
+          <div style="width: 170px; height: 130px; background-color: #fff; border-radius: 4px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">
+            
+            <img src=${trail.trail_image} alt="Image" style="width:100%; height: 70%;">
+            <h6 style="color:black;"> <b> ${trail.trail_name}</h6> 
+            <h6 style="color:black;> ${trail.trail_location}</h6>
 
-      
-        `);
+        </div> `);
         let marker = new tt.Marker().setLngLat([trail.trail_longitude, trail.trail_latitude]).setPopup(popup).addTo(map);
       });
 
