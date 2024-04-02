@@ -5,6 +5,7 @@ import { sanitize } from "../../middlewares/sanitization/sanitize";
 import {checkLogin} from "../../middlewares/auth/checkLogin";
 import { checkAuthorizationForTrail } from "../../middlewares/auth/checkAuthorization";
 import { checkAuthorizationForReview } from "../../middlewares/auth/checkAuthorization";
+import { loadTrails } from "../../middlewares/redis-cache/loadTrails";
 import {catchAsync} from '../../utils/catchAsync';
 
 
@@ -12,7 +13,7 @@ import {catchAsync} from '../../utils/catchAsync';
 const trailRouter=express.Router();
 
 
-trailRouter.get("/",checkLogin,catchAsync(trailControllers.allTrails));
+trailRouter.get("/",checkLogin,loadTrails,catchAsync(trailControllers.allTrails));
 trailRouter.get("/new",trailControllers.renderCreateTrail);
 trailRouter.get("/:trail_id",sanitize,checkLogin,catchAsync(trailControllers.viewTrail));
 trailRouter.get("/:trail_id/reviews",sanitize,checkLogin,reviewControllers.allReviews);

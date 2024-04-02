@@ -37,7 +37,7 @@ const sessionOption = {
     saveUninitialized: false,
     store: connect_mongo_1.default.create({
         mongoUrl: String(process.env.MONGO_ATLAS_SESSION_STORE_URL),
-        touchAfter: 5 * 24 * 60 * 60
+        touchAfter: 5 * 24 * 60 * 60,
     }),
     cookie: {
         maxAge: 5 * 24 * 60 * 60 * 1000,

@@ -31,9 +31,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allTrails = void 0;
+exports.allTrails = exports.client = void 0;
 const myModels = __importStar(require("../../models/index"));
+const ioredis_1 = __importDefault(require("ioredis"));
+exports.client = new ioredis_1.default();
 const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //no need to await the operation
     const Trails = myModels.Trail.findAll();
@@ -42,6 +47,19 @@ const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             req.flash("danger", "No trail was found, login and let's create one.");
             return res.redirect("/trails/new");
         }
+        //adding all trails into redis 'trails' cache
+        allTrails.forEach(trail => {
+            exports.client.sadd('trails', JSON.stringify(trail), (err, reply) => {
+                if (err) {
+                    console.error('Error while adding trail into redis cache !', err);
+                    return;
+                }
+                //console.log('trail added successfully into redis cache');
+            });
+        });
+        //Redis "trails" cache expires in 1h
+        exports.client.expire('trails', 3060);
+        console.log("READING FROM DB..");
         return res.render("trails", { allTrails });
     }).catch(err => {
         return next(err);
