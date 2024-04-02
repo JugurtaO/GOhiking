@@ -13,7 +13,8 @@ import {catchAsync} from '../../utils/catchAsync';
 const trailRouter=express.Router();
 
 
-trailRouter.get("/",checkLogin,loadTrails,catchAsync(trailControllers.allTrails));
+//Fetch trails from redis cache if they exist, otherwise from th db.
+trailRouter.get("/",checkLogin,loadTrails,catchAsync(trailControllers.allTrails));  
 trailRouter.get("/new",trailControllers.renderCreateTrail);
 trailRouter.get("/:trail_id",sanitize,checkLogin,catchAsync(trailControllers.viewTrail));
 trailRouter.get("/:trail_id/reviews",sanitize,checkLogin,reviewControllers.allReviews);

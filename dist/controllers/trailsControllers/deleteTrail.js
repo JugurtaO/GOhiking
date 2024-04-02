@@ -31,9 +31,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTrail = void 0;
+exports.deleteTrail = exports.client = void 0;
 const myModels = __importStar(require("../../models/index"));
+const ioredis_1 = __importDefault(require("ioredis"));
+exports.client = new ioredis_1.default();
 const deleteTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { trail_id } = req.params;
     //delete hikes and reviews referencing corresponding trail before deleting it itself
@@ -41,7 +46,15 @@ const deleteTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         myModels.Hike.destroy({ where: { trail_id: trail_id } }),
         myModels.Review.destroy({ where: { trail_id: trail_id } })
     ]).then(data => {
+        //first delete trail from db
         myModels.Trail.destroy({ where: { trail_id: trail_id } });
+        //then update redis cache by removing the same trail
+        exports.client.srem('trails', trail_id, (err, reply) => {
+            if (err) {
+                console.error('Error while deleting trail from redis cache !', err);
+                return;
+            }
+        });
         req.flash("success", `Successfuly deleted trail`);
         return res.redirect("/trails");
     }).catch(err => {

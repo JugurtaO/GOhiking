@@ -35,9 +35,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addTrail = exports.getLngLat = void 0;
+exports.addTrail = exports.getLngLat = exports.client = void 0;
 const myModels = __importStar(require("../../models/index"));
 const axios_1 = __importDefault(require("axios"));
+const ioredis_1 = __importDefault(require("ioredis"));
+//requiring ioredis client
+exports.client = new ioredis_1.default();
 function getLngLat(location) {
     return __awaiter(this, void 0, void 0, function* () {
         const apiKey = String(process.env.TOMTOM_API_KEY); // Replace with your TomTom API key
@@ -79,11 +82,19 @@ const addTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         req.flash("danger", "Trail with given name already exists! ");
         return res.redirect("/trails/new");
     }
+    //get trail  GPS coordinates from given location name
     const [longitude, latitude] = yield getLngLat(String(trail_location));
     // now we can create new trail 
     //no need to await the operation the user cannot see the effect behind the scenes
-    const newTrail = myModels.Trail.create({ trail_name: trail_name, trail_location: trail_location, difficulty_level: difficulty_level, trail_image: trail_image + '/1600x900', author_id: author_id, trail_longitude: longitude, trail_latitude: latitude })
+    const newTrail = myModels.Trail.create({ trail_name: trail_name, trail_location: trail_location, difficulty_level: difficulty_level, trail_image: trail_image + '/640x426', author_id: author_id, trail_longitude: longitude, trail_latitude: latitude })
         .then(data => {
+        //Add new created trail to the cache
+        exports.client.sadd('trails', JSON.stringify(newTrail), (err, reply) => {
+            if (err) {
+                console.error('Error while adding trail into redis cache !', err);
+                return;
+            }
+        });
         req.flash("success", "Successfuly created trail.");
         return res.redirect(`/trails/${data.dataValues.trail_id}`);
     }).catch(err => {

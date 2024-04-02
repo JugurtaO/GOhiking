@@ -36,6 +36,7 @@ const checkAuthorization_2 = require("../../middlewares/auth/checkAuthorization"
 const loadTrails_1 = require("../../middlewares/redis-cache/loadTrails");
 const catchAsync_1 = require("../../utils/catchAsync");
 const trailRouter = express_1.default.Router();
+//Fetch trails from redis cache if they exist, otherwise from th db.
 trailRouter.get("/", checkLogin_1.checkLogin, loadTrails_1.loadTrails, (0, catchAsync_1.catchAsync)(trailControllers.allTrails));
 trailRouter.get("/new", trailControllers.renderCreateTrail);
 trailRouter.get("/:trail_id", sanitize_1.sanitize, checkLogin_1.checkLogin, (0, catchAsync_1.catchAsync)(trailControllers.viewTrail));
