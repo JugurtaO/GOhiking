@@ -1,6 +1,8 @@
 ## Welcome to GOhiking
 
 GOhiking is a REST API that allows hikers to find new hiking routes ,create their own and review hikes. It illustrates the usecase of Express alongside MySql.
+![toomas-tartes-Yizrl9N_eDA-unsplash](https://github.com/JugurtaO/GoHiking/assets/98745935/06a3665c-899f-487b-aed2-e0d0aba941ac)
+
 
 ---
 
@@ -11,6 +13,7 @@ GOhiking is a REST API that allows hikers to find new hiking routes ,create thei
 * SCSS theme for the front-end / EJS(SSR).
 * MongoStore for session store.
 * Bcryptjs for an authentification strategy.
+* Mapbox API for the map and geocoding.
 
 ---
 
@@ -21,6 +24,7 @@ GOhiking is a REST API that allows hikers to find new hiking routes ,create thei
 * REST architecture style implementation and route structuring.
 * Implementation of an authentication and session management system.
 * Implementation of user authorization and controls with middleware.
+* Redis cache set up for performance enhancement.
 * Flashs and redirections.
 
 ---
