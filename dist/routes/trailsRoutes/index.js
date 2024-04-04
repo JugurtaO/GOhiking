@@ -35,11 +35,13 @@ const checkAuthorization_1 = require("../../middlewares/auth/checkAuthorization"
 const checkAuthorization_2 = require("../../middlewares/auth/checkAuthorization");
 const loadTrails_1 = require("../../middlewares/redis-cache/loadTrails");
 const catchAsync_1 = require("../../utils/catchAsync");
+const loadTrail_1 = require("../../middlewares/redis-cache/loadTrail");
 const trailRouter = express_1.default.Router();
 //Fetch trails from redis cache if they exist, otherwise from th db.
 trailRouter.get("/", checkLogin_1.checkLogin, loadTrails_1.loadTrails, (0, catchAsync_1.catchAsync)(trailControllers.allTrails));
 trailRouter.get("/new", trailControllers.renderCreateTrail);
-trailRouter.get("/:trail_id", sanitize_1.sanitize, checkLogin_1.checkLogin, (0, catchAsync_1.catchAsync)(trailControllers.viewTrail));
+trailRouter.get("/:trail_id", sanitize_1.sanitize, checkLogin_1.checkLogin, loadTrail_1.loadTrail, (0, catchAsync_1.catchAsync)(trailControllers.viewTrail));
+//load reviews from the cache in the futur when needed to use particularly this controller
 trailRouter.get("/:trail_id/reviews", sanitize_1.sanitize, checkLogin_1.checkLogin, reviewControllers.allReviews);
 trailRouter.post("/add", sanitize_1.sanitize, checkLogin_1.checkLogin, (0, catchAsync_1.catchAsync)(trailControllers.addTrail));
 trailRouter.post("/:trail_id/delete", sanitize_1.sanitize, checkLogin_1.checkLogin, checkAuthorization_1.checkAuthorizationForTrail, (0, catchAsync_1.catchAsync)(trailControllers.deleteTrail));

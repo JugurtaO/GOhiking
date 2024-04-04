@@ -56,7 +56,7 @@ const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             let newRes = strAsArray.join('/') + "/640x426";
             //@ts-ignore
             trail.trail_image = newRes;
-            exports.client.sadd('trails', JSON.stringify(trail), (err, reply) => {
+            exports.client.sadd("trails", JSON.stringify(trail), (err, reply) => {
                 if (err) {
                     console.error('Error while adding trail into redis cache !', err);
                     return;
@@ -64,7 +64,7 @@ const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             });
         });
         //Redis "trails" cache expires in 1h
-        exports.client.expire('trails', 3600);
+        exports.client.expire("trails", 30);
         console.log("READING FROM DB..");
         return res.render("trails", { allTrails });
     }).catch(err => {

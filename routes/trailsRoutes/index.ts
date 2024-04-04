@@ -7,6 +7,7 @@ import { checkAuthorizationForTrail } from "../../middlewares/auth/checkAuthoriz
 import { checkAuthorizationForReview } from "../../middlewares/auth/checkAuthorization";
 import { loadTrails } from "../../middlewares/redis-cache/loadTrails";
 import {catchAsync} from '../../utils/catchAsync';
+import { loadTrail } from "../../middlewares/redis-cache/loadTrail";
 
 
 
@@ -16,7 +17,9 @@ const trailRouter=express.Router();
 //Fetch trails from redis cache if they exist, otherwise from th db.
 trailRouter.get("/",checkLogin,loadTrails,catchAsync(trailControllers.allTrails));  
 trailRouter.get("/new",trailControllers.renderCreateTrail);
-trailRouter.get("/:trail_id",sanitize,checkLogin,catchAsync(trailControllers.viewTrail));
+trailRouter.get("/:trail_id",sanitize,checkLogin,loadTrail,catchAsync(trailControllers.viewTrail));
+
+//load reviews from the cache in the futur when needed to use particularly this controller
 trailRouter.get("/:trail_id/reviews",sanitize,checkLogin,reviewControllers.allReviews);
 
 trailRouter.post("/add",sanitize,checkLogin, catchAsync(trailControllers.addTrail)); 

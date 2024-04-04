@@ -31,9 +31,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewTrail = void 0;
+exports.viewTrail = exports.client = void 0;
 const myModels = __importStar(require("../../models/index"));
+const ioredis_1 = __importDefault(require("ioredis"));
+exports.client = new ioredis_1.default();
 const viewTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { trail_id } = req.params;
     const trail = myModels.Trail.findOne({ where: { trail_id: trail_id } });
@@ -42,8 +47,19 @@ const viewTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             req.flash("danger", `No trail was found !`);
             return res.redirect("/trails");
         }
-        // load all trail reviews & their author| no need to await the operation
-        const allReviews = yield myModels.Review.findAll({ include: { model: myModels.User }, where: { trail_id: trail_id }, limit: 20 });
+        // // load all trail reviews & their author
+        const allReviews = yield myModels.Review.findAll({ include: { model: myModels.User }, where: { trail_id: trail_id }, limit: 10 });
+        // //add all trail reviews into the cache
+        // allReviews.forEach(review => {
+        //     client.sadd('reviews', JSON.stringify(review), (err, reply) => {
+        //         if (err) {
+        //             console.error('Error while adding review into redis cache !', err);
+        //             return;
+        //         }
+        //     });
+        // })
+        //Redis "reviews" cache expires in 1h
+        exports.client.expire('reviews', 3600);
         return res.render("viewTrail", { Trail, allReviews });
     })).catch(err => {
         return next(err);
