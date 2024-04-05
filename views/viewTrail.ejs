@@ -33,8 +33,8 @@
   <main class="container mt-5">
 
 
-    <div class="row">
-      <div class="col-6">
+    <div class="row" >
+      <div class="col-6" style="width: 50rem;">
         <div class="card mb-5">
           <img src="<%= Trail.trail_image %>" class="card-img-top" alt="...">
           <div class="card-body">
@@ -59,7 +59,7 @@
       </div>
 
 
-      <div class="col-xs-6 col-md-4 mx-2  card my-5 shadow-lg p-3  mb-5 bg-body rounded" id="postReviewForm">
+      <div class="col-xs-6 col-md-4 mx-2  card my-6 shadow-lg p-3  mb-5 bg-body rounded" id="postReviewForm" style="width: 30.7rem;">
         <div class="card-body mt-5">
           <div class="card-title">
           </div>
@@ -86,7 +86,7 @@
               </div>
             </section>
             <div class="mb-3">
-              <textarea class="form-control" name="review_text" id="review_text" cols="60" rows="3" placeholder="Tell us more about this trail!" autofocus required ></textarea>
+              <textarea class="form-control" name="review_text" id="review_text" cols="60" rows="3" placeholder="Tell us more about this trail!" autofocus required  max-height: 200px;></textarea>
             </div>
             <button class="btn btn-outline-success btn-lg mt-5 ">Post</button>
 
@@ -98,7 +98,7 @@
     </div>
 
 
-    <section style="color: #000; background-color: #f3f2f2;">
+    <section style="color: #000; background-color: #f3f2f2;" >
       <div class="container py-5">
         <div class="row d-flex justify-content-center">
           <div class="col-md-10 col-xl-8 text-center">
@@ -157,7 +157,7 @@
     const center = [longitude, latitude];
     let map = tt.map({
       key: API_KEY,
-      container: "map",
+      container: "map", 
       center: center,
       zoom: 10
     })
