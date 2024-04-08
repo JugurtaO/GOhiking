@@ -1,25 +1,41 @@
-import { Request,Response,NextFunction } from "express"
+import { Request, Response, NextFunction } from "express"
 import Redis from 'ioredis'
 
-export const client =new Redis();
-export const loadTrails =  async(req:Request,res:Response,next:NextFunction) =>{
-    
-    const cachedTrails= await client.smembers("trails");
+export const client = new Redis();
+export const loadTrails = async (req: Request, res: Response, next: NextFunction) => {
 
-    //if the cache is empty then call next to move into the correspondign controller 
-    if(!cachedTrails || !cachedTrails.length){
-        return next();
-    }
-
-    console.log("READING TRAILS FROM THE CACHE ..")
     
-    //else, retreive data from the cache
-    const allTrails: any[]=[];
-   
-    cachedTrails.forEach(trail=>{
-        allTrails.push(JSON.parse(trail))
-    })
-    return res.render("trails", { allTrails });
+    client.keys('trail:*', (err, keys) => {
+        if (err) {
+            console.error("Error while getting trail key from redis cache! ", err);
+            return;
+        }
+        if (!keys || !keys.length) {
+            return next();
+        }
+
+        // Récupérer les valeurs associées à ces clés
+        client.mget(keys, (err, trailJsonArray) => {
+            if (err) {
+                console.error("Error while getting trails array from redis cache! ", err);
+                return;
+            }
+
+            // Traiter chaque valeur JSON récupérée
+            const allTrails = trailJsonArray.map(json => JSON.parse(json));
+           
+
+
+
+            console.log("READING FROM THE CACHE !"); 
+
+
+            return res.render("trails", { allTrails });
+        });
+    });
+
+
+
 
 
 

@@ -16,25 +16,25 @@ export const viewTrail = async (req: Request, res: Response,next:NextFunction) =
             return res.redirect("/trails");
             
         }
-        // // load all trail reviews & their author
+
+        // load all trail reviews & their author
         const allReviews = await myModels.Review.findAll({include:{model:myModels.User},where: { trail_id: trail_id }, limit: 10 });
 
-        // //add all trail reviews into the cache
-       
-        // allReviews.forEach(review => {
-            
-        //     client.sadd('reviews', JSON.stringify(review), (err, reply) => {
-        //         if (err) {
-        //             console.error('Error while adding review into redis cache !', err);
-        //             return;
-        //         }
+        // add them into the cache
+        allReviews.forEach(review =>{
+            //@ts-ignore
+            client.set(`Trail:${trail_id}:review:${review.review_id}`, JSON.stringify(review), (err, reply) => {
+                if (err) {
+                    console.error('Error while adding trail review into redis cache !', err);
+                    return;
+                }
+            });
 
-        //     });
-        // })
+            //Redis "review" cache expires in 1h
+            //@ts-ignore
+            client.expire(`Trail:${trail_id}:review:${review.review_id}`, 3600)
+        })
 
-
-        //Redis "reviews" cache expires in 1h
-        client.expire('reviews', 3600)
 
         return res.render("viewTrail", { Trail, allReviews });
         

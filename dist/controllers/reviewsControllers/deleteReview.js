@@ -47,7 +47,7 @@ const deleteReview = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     }
     const review = myModels.Review.destroy({ where: { review_id: review_id } })
         .then(data => {
-        req.flash("success", `Successfuly deleted review.`);
+        req.flash("success", ` review successfuly deleted.`);
         return res.redirect(`/trails/${trail_id}`);
     }).catch(err => {
         return next(err);

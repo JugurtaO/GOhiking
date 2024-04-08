@@ -16,17 +16,25 @@ exports.loadTrails = exports.client = void 0;
 const ioredis_1 = __importDefault(require("ioredis"));
 exports.client = new ioredis_1.default();
 const loadTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const cachedTrails = yield exports.client.smembers("trails");
-    //if the cache is empty then call next to move into the correspondign controller 
-    if (!cachedTrails || !cachedTrails.length) {
-        return next();
-    }
-    console.log("READING TRAILS FROM THE CACHE ..");
-    //else, retreive data from the cache
-    const allTrails = [];
-    cachedTrails.forEach(trail => {
-        allTrails.push(JSON.parse(trail));
+    exports.client.keys('trail:*', (err, keys) => {
+        if (err) {
+            console.error("Error while getting trail key from redis cache! ", err);
+            return;
+        }
+        if (!keys || !keys.length) {
+            return next();
+        }
+        // Récupérer les valeurs associées à ces clés
+        exports.client.mget(keys, (err, trailJsonArray) => {
+            if (err) {
+                console.error("Error while getting trails array from redis cache! ", err);
+                return;
+            }
+            // Traiter chaque valeur JSON récupérée
+            const allTrails = trailJsonArray.map(json => JSON.parse(json));
+            console.log("READING FROM THE CACHE !");
+            return res.render("trails", { allTrails });
+        });
     });
-    return res.render("trails", { allTrails });
 });
 exports.loadTrails = loadTrails;
