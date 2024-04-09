@@ -31,12 +31,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addReview = void 0;
 const myModels = __importStar(require("../../models/index"));
+const ioredis_1 = __importDefault(require("ioredis"));
+const client = new ioredis_1.default();
 const addReview = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { review_text, review_rating } = req.body;
     const author_id = req.session.active_user_id;
+    const user_nickname = req.session.active_user_nickname;
     const { trail_id } = req.params;
     if (!review_text.length) {
         req.flash("danger", `Review cannot be blank !`);
@@ -45,6 +51,16 @@ const addReview = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     //no need to await the operation the user cannot see the effect behind the scenes
     const newReview = myModels.Review.create({ review_text: review_text, review_rating: review_rating, author_id: author_id, trail_id: trail_id });
     newReview.then(data => {
+        //add trail review to the cache
+        //@ts-ignore
+        data.dataValues.User = { user_nickname }; //Add User field with user_nickname key-value pair into  data JS object 
+        //@ts-ignore
+        client.set(`Trail:${trail_id}:review:${data.dataValues.review_id}`, JSON.stringify(data), (err, reply) => {
+            if (err) {
+                console.error('Error while adding trail review into redis cache !', err);
+                return;
+            }
+        });
         req.flash("success", `Thank you for leaving a review`);
         return res.redirect(`/trails/${trail_id}`);
     }).catch(err => {

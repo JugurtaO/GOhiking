@@ -44,8 +44,8 @@ export const loadTrail = async (req: Request, res: Response, next: NextFunction)
                     const allReviews = trailReviewsJsonArray.map(json => JSON.parse(json));
 
 
-                    console.log("READING TRAIL  AND REVIEWS FROM THE CACHE ..")
-
+                    console.log("READING TRAIL  AND REVIEWS FROM THE CACHE ..*************************")
+                    
                     return res.render("viewTrail", { Trail, allReviews });
                 });
 

@@ -54,6 +54,7 @@ const viewTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             //@ts-ignore
             exports.client.set(`Trail:${trail_id}:review:${review.review_id}`, JSON.stringify(review), (err, reply) => {
                 if (err) {
+                    console.log("**************", JSON.stringify(review));
                     console.error('Error while adding trail review into redis cache !', err);
                     return;
                 }
@@ -62,6 +63,8 @@ const viewTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             //@ts-ignore
             exports.client.expire(`Trail:${trail_id}:review:${review.review_id}`, 3600);
         });
+        //@ts-ignore
+        // console.log("REVIEW FROM DB ************** ",JSON.stringify(allReviews[0]))
         return res.render("viewTrail", { Trail, allReviews });
     })).catch(err => {
         return next(err);

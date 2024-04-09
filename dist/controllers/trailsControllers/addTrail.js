@@ -89,11 +89,15 @@ const addTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
     const newTrail = myModels.Trail.create({ trail_name: trail_name, trail_location: trail_location, difficulty_level: difficulty_level, trail_image: trail_image + '/640x426', author_id: author_id, trail_longitude: longitude, trail_latitude: latitude })
         .then(data => {
         //Add new created trail to the cache
-        exports.client.sadd("trails", JSON.stringify(newTrail), (err, reply) => {
+        //@ts-ignore
+        exports.client.set(`trail:${trail.trail_id}`, JSON.stringify(trail), (err, reply) => {
             if (err) {
                 console.error('Error while adding trail into redis cache !', err);
                 return;
             }
+            //Redis "trail" cache expires in 1h
+            //@ts-ignore
+            exports.client.expire(`trail:${trail.trail_id}`, 3600);
         });
         req.flash("success", "Trail created  uccessfuly.");
         return res.redirect(`/trails/${data.dataValues.trail_id}`);

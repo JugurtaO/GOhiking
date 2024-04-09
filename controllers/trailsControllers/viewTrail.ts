@@ -19,12 +19,16 @@ export const viewTrail = async (req: Request, res: Response,next:NextFunction) =
 
         // load all trail reviews & their author
         const allReviews = await myModels.Review.findAll({include:{model:myModels.User},where: { trail_id: trail_id }, limit: 10 });
+    
 
         // add them into the cache
         allReviews.forEach(review =>{
+
             //@ts-ignore
             client.set(`Trail:${trail_id}:review:${review.review_id}`, JSON.stringify(review), (err, reply) => {
+
                 if (err) {
+                    console.log("**************",JSON.stringify(review))
                     console.error('Error while adding trail review into redis cache !', err);
                     return;
                 }
@@ -35,7 +39,8 @@ export const viewTrail = async (req: Request, res: Response,next:NextFunction) =
             client.expire(`Trail:${trail_id}:review:${review.review_id}`, 3600)
         })
 
-
+        //@ts-ignore
+        // console.log("REVIEW FROM DB ************** ",JSON.stringify(allReviews[0]))
         return res.render("viewTrail", { Trail, allReviews });
         
 

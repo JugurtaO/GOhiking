@@ -34,6 +34,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteReview = void 0;
 const myModels = __importStar(require("../../models/index"));
+const ioredis_1 = require("ioredis");
+const client = new ioredis_1.Redis();
 const deleteReview = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { review_id, trail_id } = req.params;
     const allReviews = yield myModels.Review.findAll({ where: { review_id: review_id } });
@@ -45,8 +47,17 @@ const deleteReview = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         req.flash("danger", `not authorized to delete this review !`);
         return res.status(401).redirect(`/trails/${trail_id}`);
     }
+    //delete trail review from db
     const review = myModels.Review.destroy({ where: { review_id: review_id } })
         .then(data => {
+        //then update redis cache by removing the same trail review
+        //@ts-ignore
+        client.del(`Trail:${trail_id}:review:${review_id}`, (err, reply) => {
+            if (err) {
+                console.error('Error while deleting trail review from the cache:', err);
+                return;
+            }
+        });
         req.flash("success", ` review successfuly deleted.`);
         return res.redirect(`/trails/${trail_id}`);
     }).catch(err => {

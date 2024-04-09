@@ -32,7 +32,7 @@ const loadTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             }
             // Traiter chaque valeur JSON récupérée
             const allTrails = trailJsonArray.map(json => JSON.parse(json));
-            console.log("READING FROM THE CACHE !");
+            console.log("READING TRAILS FROM THE CACHE !************");
             return res.render("trails", { allTrails });
         });
     });

@@ -27,7 +27,7 @@ export const loadTrails = async (req: Request, res: Response, next: NextFunction
 
 
 
-            console.log("READING FROM THE CACHE !"); 
+            console.log("READING TRAILS FROM THE CACHE !************"); 
 
 
             return res.render("trails", { allTrails });
