@@ -12,6 +12,7 @@ GOhiking is a REST API that allows hikers to find new hiking routes ,create thei
 * MySQL (throughout sequelizejs ORM) for the database.
 * SCSS theme for the front-end / EJS(SSR).
 * MongoStore for session store.
+* Redis for caching strategy.
 * Bcryptjs for an authentification strategy.
 * Mapbox API for the map and geocoding.
 
