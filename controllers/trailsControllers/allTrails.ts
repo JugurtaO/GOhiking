@@ -9,7 +9,6 @@ export const allTrails = async (req: Request, res: Response, next: NextFunction)
     const Trails = myModels.Trail.findAll({limit:16});
 
     Trails.then((allTrails) => {
-
         if (!allTrails.length) {
             req.flash("danger", "No trail was found, login and let's create one.");
             return res.redirect("/trails/new");

@@ -37,9 +37,13 @@ const loadTrails_1 = require("../../middlewares/redis-cache/loadTrails");
 const catchAsync_1 = require("../../utils/catchAsync");
 const loadTrail_1 = require("../../middlewares/redis-cache/loadTrail");
 const trailRouter = express_1.default.Router();
-//Fetch trails from redis cache if they exist, otherwise from th db.
+//loadtrails from redis cache if they exist, otherwise from th db. {limit 16}
 trailRouter.get("/", checkLogin_1.checkLogin, loadTrails_1.loadTrails, (0, catchAsync_1.catchAsync)(trailControllers.allTrails));
+/*load all trails from th db. {no need to check whether the user is logged in }
+*/
+trailRouter.get("/mapTrails", (0, catchAsync_1.catchAsync)(trailControllers.mapTrails));
 trailRouter.get("/new", trailControllers.renderCreateTrail);
+//load trail from redis cache if they exist, otherwise from th db.
 trailRouter.get("/:trail_id", sanitize_1.sanitize, checkLogin_1.checkLogin, loadTrail_1.loadTrail, (0, catchAsync_1.catchAsync)(trailControllers.viewTrail));
 //load reviews from the cache in the futur when needed to use particularly this controller
 trailRouter.get("/:trail_id/reviews", sanitize_1.sanitize, checkLogin_1.checkLogin, reviewControllers.allReviews);

@@ -14,11 +14,16 @@ import { loadTrail } from "../../middlewares/redis-cache/loadTrail";
 const trailRouter=express.Router();
 
 
-//Fetch trails from redis cache if they exist, otherwise from th db.
-trailRouter.get("/",checkLogin,loadTrails,catchAsync(trailControllers.allTrails));  
-trailRouter.get("/new",trailControllers.renderCreateTrail);
-trailRouter.get("/:trail_id",sanitize,checkLogin,loadTrail,catchAsync(trailControllers.viewTrail));
+//loadtrails from redis cache if they exist, otherwise from th db. {limit 16}
+trailRouter.get("/",checkLogin,loadTrails,catchAsync(trailControllers.allTrails)); 
 
+/*load all trails from th db. {no need to check whether the user is logged in }
+*/
+trailRouter.get("/mapTrails",catchAsync(trailControllers.mapTrails)); 
+trailRouter.get("/new",trailControllers.renderCreateTrail);
+
+//load trail from redis cache if they exist, otherwise from th db.
+trailRouter.get("/:trail_id",sanitize,checkLogin,loadTrail,catchAsync(trailControllers.viewTrail));
 //load reviews from the cache in the futur when needed to use particularly this controller
 trailRouter.get("/:trail_id/reviews",sanitize,checkLogin,reviewControllers.allReviews);
 

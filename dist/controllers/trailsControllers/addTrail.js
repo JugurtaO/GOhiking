@@ -35,12 +35,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addTrail = exports.getLngLat = exports.client = void 0;
+exports.addTrail = exports.getLngLat = void 0;
 const myModels = __importStar(require("../../models/index"));
 const axios_1 = __importDefault(require("axios"));
 const ioredis_1 = __importDefault(require("ioredis"));
 //requiring ioredis client
-exports.client = new ioredis_1.default();
+const client = new ioredis_1.default();
 function getLngLat(location) {
     return __awaiter(this, void 0, void 0, function* () {
         const apiKey = String(process.env.TOMTOM_API_KEY);
@@ -90,14 +90,14 @@ const addTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         .then(data => {
         //Add new created trail to the cache
         //@ts-ignore
-        exports.client.set(`trail:${trail.trail_id}`, JSON.stringify(trail), (err, reply) => {
+        client.set(`trail:${trail.trail_id}`, JSON.stringify(trail), (err, reply) => {
             if (err) {
                 console.error('Error while adding trail into redis cache !', err);
                 return;
             }
             //Redis "trail" cache expires in 1h
             //@ts-ignore
-            exports.client.expire(`trail:${trail.trail_id}`, 3600);
+            client.expire(`trail:${trail.trail_id}`, 3600);
         });
         req.flash("success", "Trail created  uccessfuly.");
         return res.redirect(`/trails/${data.dataValues.trail_id}`);

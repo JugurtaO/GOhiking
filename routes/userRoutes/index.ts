@@ -12,8 +12,7 @@ userRouter.get("/profile",userControllers.getProfile);
 userRouter.get("/signout",userControllers.getSignout);
 userRouter.get("/logout", sanitize, catchAsync(userControllers.getLogout));
 
-userRouter.get("/trails",trailControllers.userTrails);
-
+userRouter.get("/trails",trailControllers.allTrails);
 
 
 userRouter.post("/login",  sanitize, catchAsync(userControllers.postLogin ));

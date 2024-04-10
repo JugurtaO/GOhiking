@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.renderCreateTrail = exports.viewTrail = exports.allTrails = exports.userTrails = exports.deleteTrail = exports.addTrail = void 0;
+exports.renderCreateTrail = exports.viewTrail = exports.allTrails = exports.mapTrails = exports.deleteTrail = exports.addTrail = void 0;
 const addTrail_1 = require("./addTrail");
 Object.defineProperty(exports, "addTrail", { enumerable: true, get: function () { return addTrail_1.addTrail; } });
 const deleteTrail_1 = require("./deleteTrail");
 Object.defineProperty(exports, "deleteTrail", { enumerable: true, get: function () { return deleteTrail_1.deleteTrail; } });
-const viewMyTrails_1 = require("./viewMyTrails");
-Object.defineProperty(exports, "userTrails", { enumerable: true, get: function () { return viewMyTrails_1.userTrails; } });
+const mapTrails_1 = require("./mapTrails");
+Object.defineProperty(exports, "mapTrails", { enumerable: true, get: function () { return mapTrails_1.mapTrails; } });
 const allTrails_1 = require("./allTrails");
 Object.defineProperty(exports, "allTrails", { enumerable: true, get: function () { return allTrails_1.allTrails; } });
 const viewTrail_1 = require("./viewTrail");

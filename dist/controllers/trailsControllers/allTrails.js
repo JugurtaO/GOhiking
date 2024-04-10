@@ -35,10 +35,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allTrails = exports.client = void 0;
+exports.allTrails = void 0;
 const myModels = __importStar(require("../../models/index"));
 const ioredis_1 = __importDefault(require("ioredis"));
-exports.client = new ioredis_1.default();
+const client = new ioredis_1.default();
 const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const Trails = myModels.Trail.findAll({ limit: 16 });
     Trails.then((allTrails) => {
@@ -56,14 +56,14 @@ const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             //@ts-ignore
             trail.trail_image = newRes;
             //@ts-ignore
-            exports.client.set(`trail:${trail.trail_id}`, JSON.stringify(trail), (err, reply) => {
+            client.set(`trail:${trail.trail_id}`, JSON.stringify(trail), (err, reply) => {
                 if (err) {
                     console.error('Error while adding trail into redis cache !', err);
                     return;
                 }
                 //Make redis "trail" cache expires in 1h
                 //@ts-ignore
-                exports.client.expire(`trail:${trail.trail_id}`, 3600);
+                client.expire(`trail:${trail.trail_id}`, 3600);
             });
         });
         console.log("READING FROM DB..");

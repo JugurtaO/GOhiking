@@ -1,12 +1,12 @@
 import { addTrail } from "./addTrail";
 import { deleteTrail } from "./deleteTrail";
-import { userTrails } from "./viewMyTrails";
+import { mapTrails } from "./mapTrails";
 import { allTrails } from "./allTrails";
 import { viewTrail } from "./viewTrail";
 import { renderCreateTrail } from "./renderCreateTrail";
 export {addTrail};
 export {deleteTrail};
-export {userTrails};
+export {mapTrails};
 export  {allTrails};
 export {viewTrail};
 export {renderCreateTrail};
