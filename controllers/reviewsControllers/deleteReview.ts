@@ -15,24 +15,16 @@ export const deleteReview = async (req: Request, res: Response, next: NextFuncti
 
         req.flash("danger", `no review found with given data`);
         return res.redirect(`/trails/${trail_id}`);
-
-
     }
 
-
     if (allReviews[0].dataValues.author_id != req.session.active_user_id) {
-
         req.flash("danger", `not authorized to delete this review !`);
         return res.status(401).redirect(`/trails/${trail_id}`);
-
-
     }
 
     //delete trail review from db
     const review = myModels.Review.destroy({ where: { review_id: review_id } })
         .then(data => {
-
-
             //then update redis cache by removing the same trail review
             //@ts-ignore
             client.del(`Trail:${trail_id}:review:${review_id}`, (err, reply) => {

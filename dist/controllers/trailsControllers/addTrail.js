@@ -43,7 +43,7 @@ const ioredis_1 = __importDefault(require("ioredis"));
 exports.client = new ioredis_1.default();
 function getLngLat(location) {
     return __awaiter(this, void 0, void 0, function* () {
-        const apiKey = String(process.env.TOMTOM_API_KEY); // Replace with your TomTom API key
+        const apiKey = String(process.env.TOMTOM_API_KEY);
         const url = `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(location)}.json`;
         try {
             const response = yield axios_1.default.get(url, {

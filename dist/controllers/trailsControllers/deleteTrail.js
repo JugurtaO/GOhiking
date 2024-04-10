@@ -48,7 +48,7 @@ const deleteTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     ]).then(data => {
         //first delete trail from db
         myModels.Trail.destroy({ where: { trail_id: trail_id } });
-        //then update redis cache by removing the same trail
+        //then update redis cache by removing the same trail from it
         exports.client.del(`trail:${trail_id}`, (err, reply) => {
             if (err) {
                 console.error('Error while deleting trail from the cache:', err);

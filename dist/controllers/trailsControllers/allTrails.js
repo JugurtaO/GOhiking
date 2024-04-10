@@ -40,14 +40,13 @@ const myModels = __importStar(require("../../models/index"));
 const ioredis_1 = __importDefault(require("ioredis"));
 exports.client = new ioredis_1.default();
 const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    //no need to await the operation
-    const Trails = myModels.Trail.findAll({ limit: 16 }); //16
+    const Trails = myModels.Trail.findAll({ limit: 16 });
     Trails.then((allTrails) => {
         if (!allTrails.length) {
             req.flash("danger", "No trail was found, login and let's create one.");
             return res.redirect("/trails/new");
         }
-        //adding all trails into redis 'trails' cache
+        //adding all trails into redis cache 640x426 
         allTrails.forEach(trail => {
             //change trail  image resolution 
             //@ts-ignore
@@ -62,7 +61,7 @@ const allTrails = (req, res, next) => __awaiter(void 0, void 0, void 0, function
                     console.error('Error while adding trail into redis cache !', err);
                     return;
                 }
-                //Redis "trail" cache expires in 1h
+                //Make redis "trail" cache expires in 1h
                 //@ts-ignore
                 exports.client.expire(`trail:${trail.trail_id}`, 3600);
             });

@@ -1,27 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import * as myModels from "../../models/index";
 import Redis from "ioredis";
+const client = new Redis();
 
-export const client = new Redis();
 
 export const allTrails = async (req: Request, res: Response, next: NextFunction) => {
 
-
-    //no need to await the operation
-    const Trails = myModels.Trail.findAll({limit:16});   //16
+    const Trails = myModels.Trail.findAll({limit:16});
 
     Trails.then((allTrails) => {
-
 
         if (!allTrails.length) {
             req.flash("danger", "No trail was found, login and let's create one.");
             return res.redirect("/trails/new");
         }
 
-        //adding all trails into redis 'trails' cache
+        //adding all trails into redis cache 640x426 
         allTrails.forEach(trail => {
-
-
             //change trail  image resolution 
             //@ts-ignore
             let strAsArray = trail.trail_image.split('/');
@@ -38,7 +33,7 @@ export const allTrails = async (req: Request, res: Response, next: NextFunction)
                     return;
                 }
                 
-                //Redis "trail" cache expires in 1h
+                //Make redis "trail" cache expires in 1h
                 //@ts-ignore
                 client.expire(`trail:${trail.trail_id}`, 3600)
             });
@@ -47,7 +42,6 @@ export const allTrails = async (req: Request, res: Response, next: NextFunction)
 
 
         console.log("READING FROM DB..")
-
         return res.render("trails", { allTrails });
 
     }).catch(err => {

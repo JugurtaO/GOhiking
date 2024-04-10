@@ -18,16 +18,10 @@ export const addReview = async (req: Request, res: Response, next: NextFunction)
 
     //no need to await the operation the user cannot see the effect behind the scenes
     const newReview = myModels.Review.create({ review_text: review_text, review_rating: review_rating, author_id: author_id, trail_id: trail_id });
-
-
-
     newReview.then(data => {
         //add trail review to the cache
-
-
         //@ts-ignore
         data.dataValues.User = { user_nickname }   //Add User field with user_nickname key-value pair into  data JS object 
-
         //@ts-ignore
         client.set(`Trail:${trail_id}:review:${data.dataValues.review_id}`, JSON.stringify(data), (err, reply) => {
             if (err) {

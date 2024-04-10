@@ -3,7 +3,7 @@ import * as myModels from "../../models/index";
 
 import Redis from 'ioredis'
 
-export const client =new Redis();
+const client =new Redis();
 export const viewTrail = async (req: Request, res: Response,next:NextFunction) => {
 
     const { trail_id } = req.params;

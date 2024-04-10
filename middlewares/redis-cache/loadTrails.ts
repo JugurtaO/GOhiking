@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express"
 import Redis from 'ioredis'
 
-export const client = new Redis();
+const client = new Redis();
 export const loadTrails = async (req: Request, res: Response, next: NextFunction) => {
-
-    
+    //get all registered trail keys
     client.keys('trail:*', (err, keys) => {
         if (err) {
             console.error("Error while getting trail key from redis cache! ", err);
@@ -14,19 +13,15 @@ export const loadTrails = async (req: Request, res: Response, next: NextFunction
             return next();
         }
 
-        // Récupérer les valeurs associées à ces clés
+        // then get the associated value for each key
         client.mget(keys, (err, trailJsonArray) => {
             if (err) {
                 console.error("Error while getting trails array from redis cache! ", err);
                 return;
             }
 
-            // Traiter chaque valeur JSON récupérée
+            
             const allTrails = trailJsonArray.map(json => JSON.parse(json));
-           
-
-
-
             console.log("READING TRAILS FROM THE CACHE !************"); 
 
 
