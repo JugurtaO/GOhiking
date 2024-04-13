@@ -34,6 +34,8 @@ export const addTrail = async (req: Request, res: Response,next:NextFunction) =>
 
     const { trail_name, trail_location, difficulty_level, trail_image }: { trail_name: String, trail_location: String, difficulty_level: String, trail_image: String } = req.body;
     const author_id = req.session.active_user_id;
+    const user_nickname = req.session.active_user_nickname;
+
 
 
     if (!trail_name.length || !trail_location.length || !difficulty_level.length || !trail_image.length) {
@@ -63,9 +65,10 @@ export const addTrail = async (req: Request, res: Response,next:NextFunction) =>
     //no need to await the operation the user cannot see the effect behind the scenes
     const newTrail = myModels.Trail.create({ trail_name: trail_name, trail_location: trail_location, difficulty_level: difficulty_level, trail_image: trail_image+'/640x426', author_id: author_id,trail_longitude:longitude,trail_latitude:latitude })
         .then(data => {
-            //Add new created trail to the cache
+          
+          //Add new created trail to the cache
              //@ts-ignore
-             client.set(`trail:${trail.trail_id}`, JSON.stringify(trail), (err, reply) => {
+             client.set(`trail:${data.dataValues.trail_id}`, JSON.stringify(data.dataValues), (err, reply) => {
               if (err) {
                   console.error('Error while adding trail into redis cache !', err);
                   return;
@@ -73,7 +76,7 @@ export const addTrail = async (req: Request, res: Response,next:NextFunction) =>
               
               //Redis "trail" cache expires in 1h
               //@ts-ignore
-              client.expire(`trail:${trail.trail_id}`, 3600)
+              client.expire(`trail:${data.dataValues.trail_id}`, 3600)
           });
 
 

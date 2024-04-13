@@ -67,6 +67,7 @@ exports.getLngLat = getLngLat;
 const addTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { trail_name, trail_location, difficulty_level, trail_image } = req.body;
     const author_id = req.session.active_user_id;
+    const user_nickname = req.session.active_user_nickname;
     if (!trail_name.length || !trail_location.length || !difficulty_level.length || !trail_image.length) {
         req.flash("danger", "Trail characteristics cannot be blank!");
         return res.redirect("/trails/new");
@@ -90,14 +91,14 @@ const addTrail = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         .then(data => {
         //Add new created trail to the cache
         //@ts-ignore
-        client.set(`trail:${trail.trail_id}`, JSON.stringify(trail), (err, reply) => {
+        client.set(`trail:${data.dataValues.trail_id}`, JSON.stringify(data.dataValues), (err, reply) => {
             if (err) {
                 console.error('Error while adding trail into redis cache !', err);
                 return;
             }
             //Redis "trail" cache expires in 1h
             //@ts-ignore
-            client.expire(`trail:${trail.trail_id}`, 3600);
+            client.expire(`trail:${data.dataValues.trail_id}`, 3600);
         });
         req.flash("success", "Trail created  uccessfuly.");
         return res.redirect(`/trails/${data.dataValues.trail_id}`);
